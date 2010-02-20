@@ -9,13 +9,17 @@
 
 #include <stdint.h>
 #include <sys/types.h>
+#include <stdbool.h>
 
 typedef void CuObject;
 
+typedef void (*CuInitializer)(void* o);
+typedef void (*CuFinalizer)(void* o);
+
 typedef struct CuObjectKindInfo {
 	size_t InstancesSize;
-	void (*Initialize)(void* o);
-	void (*Destroy)(void* o);
+	CuInitializer Initialize;
+	CuFinalizer Destroy;
 } CuObjectKindInfo;
 
 typedef struct CuObjectKind {
@@ -31,7 +35,7 @@ typedef struct CuObjectBase {
 #define CuGetObjectKind(a) (CuGetObjectBase(a)->CuObjectKind)
 #define CuGetObjectKindInfo(a) (CuGetObjectBase(a)->CuObjectKind->CuObjectKindInfo)
 
-extern void CuAlloc(CuObjectKind* kind);
+extern void* CuAlloc(CuObjectKind* kind);
 
 extern void CuRetain(CuObject* o);
 extern void CuRelease(CuObject* o);

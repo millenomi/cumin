@@ -8,21 +8,35 @@
  */
 
 #include "CuArray.h"
+#import <stdlib.h>
+#include <string.h>
+
+// ~ Kind & Instance layout (immutable) ~
 
 typedef struct {
 	CuObjectKind* kind;
-	void* objects;
+	CuObject** objects;
 	size_t count;
 } CuArrayActual;
 #define CuArrayGetActual(x) ((CuArrayActual*)x)
 
-const CuObjectKindInfo CuArrayKindInfo = {
-	sizeof(CuArrayActual),
-	(void*)0,
-	&CuArrayDestroy
-};
-const CuObjectKind CuArrayKind = { &CuArrayKindInfo };
+static void CuArrayDestroy(CuArrayActual* a);
 
+static CuObjectKindInfo CuArrayKindInfo = {
+	sizeof(CuArrayActual),
+	NULL,
+	(CuFinalizer) &CuArrayDestroy
+};
+static CuObjectKind CuArrayKind = { &CuArrayKindInfo };
+
+
+// ~ Constructor/Destructor (immutable) ~
+
+static void CuArrayDestroy(CuArrayActual* me) {
+	for (size_t i = 0; i < me->count; i++)
+		CuRelease(me->objects[i]);
+	free(me->objects);
+}
 
 CuArray* CuArrayCreate(CuObject** objects, size_t count) {
 	CuArrayActual* me = CuAlloc(&CuArrayKind);
@@ -30,6 +44,8 @@ CuArray* CuArrayCreate(CuObject** objects, size_t count) {
 	if (count > 0) {
 		me->objects = malloc(sizeof(CuObject*) * count);
 		memcpy(me->objects, objects, count);
+		for (size_t i = 0; i < count; i++)
+			CuRetain(me->objects[i]);
 	} else
 		me->objects = NULL;
 	
@@ -37,30 +53,34 @@ CuArray* CuArrayCreate(CuObject** objects, size_t count) {
 	return (CuArray*) me;
 }
 
-extern CuArray* CuArrayGetEmpty() {
+CuArray* CuArrayGetEmpty() {
 	static CuArray* empty = NULL; if (!empty)
 		empty = CuArrayCreate(NULL, 0);
 	return empty;
 }
 
-extern CuMutableArray* CuArrayCreateMutable() {
-	return NULL; // TODO
-}
-
 CuArray* CuArrayCreateCopy(CuArray* a) {
-	// TODO
-	return NULL;
+	size_t count = CuArrayGetCount(a);
+	CuObject** objects = alloca(sizeof(CuObject*) * count);
+	CuArrayGetAllObjects(a, &objects);
+	return CuArrayCreate(objects, count);
 }
 
-CuObject* CuArrayGetObjectAtIndex(CuArray* a, size_t index) {
-	// TODO mutable	
-	return CuArrayGetActual(a)->objects[index];
-}
 
-size_t CuArrayGetCount(CuArray* a) {
+// ~ Accessing ~
+
+CuObject* CuArrayGetObjectAtIndex(CuArray* array, size_t index) {
 	// TODO mutable
-s	return CuArrayGetActual(a)->count;
+	return CuArrayGetActual(array)->objects[index];
 }
+
+size_t CuArrayGetCount(CuArray* array) {
+	// TODO mutable
+	return CuArrayGetActual(array)->count;
+}
+
+
+// ~ Mutation methods ~
 
 // TODO
 void CuArrayInsertObjectAtIndex(CuMutableArray* a, size_t index) {}

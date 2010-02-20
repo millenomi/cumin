@@ -19,7 +19,7 @@ extern CuArray* CuArrayCreateCopy(CuArray* a);
 
 extern CuObject* CuArrayGetObjectAtIndex(CuArray* a, size_t index);
 extern size_t CuArrayGetCount(CuArray* a);
-extern void CuArrayCopyAllObjects(CuArray* a, CuObject** objects);
+extern void CuArrayGetAllObjects(CuArray* a, CuObject** objects);
 
 extern void CuArrayInsertObjectAtIndex(CuMutableArray* a, size_t index);
 extern void CuArrayRemoveObjectAtIndex(CuMutableArray* a, size_t index);

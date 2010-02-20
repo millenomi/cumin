@@ -10,12 +10,13 @@
 #include "CuObject.h"
 #include <stdlib.h>
 
-void CuAlloc(CuObjectKind* kind) {
-	CuObjectBase* b = malloc(kind->CuObjectKindInfo->InstancesSize);
+void* CuAlloc(CuObjectKind* kind) {
+	CuObjectBase* b = calloc(kind->CuObjectKindInfo->InstancesSize, 1);
 	b->CuObjectKind = kind;
 	b->CuRetainCount = 0;
 	if (kind->CuObjectKindInfo->Initialize)
 		kind->CuObjectKindInfo->Initialize(b);
+	return b;
 }
 
 void CuRetain(CuObject* o) {
@@ -26,7 +27,8 @@ void CuRelease(CuObject* o) {
 	if (CuGetObjectBase(o)->CuRetainCount > 1) {
 		CuGetObjectBase(o)->CuRetainCount--;
 	} else {
-		CuGetObjectKindInfo(o)->Destroy(o);
+		if (CuGetObjectKindInfo(o)->Destroy)
+			CuGetObjectKindInfo(o)->Destroy(o);
 		free(o);
 	}
 }
