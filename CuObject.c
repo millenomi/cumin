@@ -9,6 +9,7 @@
 
 #include "CuObject.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void* CuAlloc(CuObjectKind* kind) {
 	CuObjectBase* b = calloc(kind->CuObjectKindInfo->InstancesSize, 1);
@@ -19,8 +20,9 @@ void* CuAlloc(CuObjectKind* kind) {
 	return b;
 }
 
-void CuRetain(CuObject* o) {
+CuObject* CuRetain(CuObject* o) {
 	CuGetObjectBase(o)->CuRetainCount++;
+	return o;
 }
 
 void CuRelease(CuObject* o) {
@@ -37,3 +39,7 @@ uint32_t CuObjectGetRetainCount(CuObject* o) {
 	return CuGetObjectBase(o)->CuRetainCount;
 }
 
+void CuShow(CuObject* o) {
+	fprintf(stderr, "<%s %p>", CuGetObjectKindInfo(o)->Name, o);
+	fflush(stderr);
+}

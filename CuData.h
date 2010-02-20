@@ -9,10 +9,15 @@
 
 #include "CuObject.h"
 
+#ifndef Cu__Data_h__
+#define Cu__Data_h__
+
 typedef void CuData;
 
-extern CuData* CuDataCreate(void* bytes, size_t size);
-extern CuData* CuDataCreateNoCopy(void* bytes, size_t size);
+extern CuData* CuDataMake(void* bytes, size_t size);
+extern CuData* CuDataMakeNoCopy(void* bytes, size_t size);
 
 extern const void* CuDataGetBytes(CuData* data);
 extern size_t CuDataGetSize(CuData* data);
+
+#endif

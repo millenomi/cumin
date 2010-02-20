@@ -26,6 +26,7 @@ struct CuData {
 static void CuDataFinalize(struct CuData* d);
 
 static CuObjectKindInfo CuDataKindInfo = {
+	"CuData",
 	sizeof(struct CuData),
 	NULL,
 	(CuFinalizer) &CuDataFinalize
@@ -36,17 +37,17 @@ static CuObjectKind CuDataKind = { &CuDataKindInfo };
 
 // ~ Init/Finalize ~
 
-CuData* CuDataCreate(void* bytes, size_t size) {
+CuData* CuDataMake(void* bytes, size_t size) {
 	struct CuData* c = CuAlloc(&CuDataKind);
 	c->Bytes = malloc(size);
 	memcpy(c->Bytes, bytes, size);
 	c->Size = size;
 	c->OwnsBuffer = true;
 	
-	return (CuData*) c;
+	return CuReleaseLater(c);
 }
 
-CuData* CuDataCreateNoCopy(void* bytes, size_t size) {
+CuData* CuDataMakeNoCopy(void* bytes, size_t size) {
 	struct CuData* c = CuAlloc(&CuDataKind);
 	c->Bytes = bytes;
 	c->Size = size;

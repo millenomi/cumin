@@ -7,13 +7,16 @@
 //
 
 #import "CuDataTests.h"
+#import "CuReleasePool.h"
 
 @implementation CuDataTests
 
 - (void) testCreation;
-{
+{ // CuWaitForDebugger(go);
+	CuReleasePoolScope();
+	
 	NSData* cocoaData = [@"This is just a test" dataUsingEncoding:NSUTF8StringEncoding];
-	CuData* cuminData = CuDataCreate((void*)[cocoaData bytes], [cocoaData length]);
+	CuData* cuminData = CuDataMake((void*)[cocoaData bytes], [cocoaData length]);
 	
 	STAssertTrue(CuDataGetBytes(cuminData) != NULL, @"Data has a backing store");
 	STAssertEquals(CuDataGetSize(cuminData), [cocoaData length], @"Data is of the right length");
@@ -22,15 +25,11 @@
 	NSData* cocoaData2 = [NSData dataWithBytes:CuDataGetBytes(cuminData) length:CuDataGetSize(cuminData)];
 	STAssertEqualObjects(cocoaData, cocoaData2, @"Data was copied accurately");
 	
-	CuRelease(cuminData);
-	
-	cuminData = CuDataCreateNoCopy((void*)[cocoaData bytes], [cocoaData length]);
+	cuminData = CuDataMakeNoCopy((void*)[cocoaData bytes], [cocoaData length]);
 	
 	STAssertTrue(CuDataGetBytes(cuminData) != NULL, @"Data has a backing store");
 	STAssertEquals(CuDataGetSize(cuminData), [cocoaData length], @"Data is of the right length");
 	STAssertEquals([cocoaData bytes], CuDataGetBytes(cuminData), @"Data was NOT copied");
-	
-	CuRelease(cuminData);
 	
 	STAssertEqualObjects(cocoaData, cocoaData2, @"Original buffer wasn't clobbered by release");
 }

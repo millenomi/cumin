@@ -28,6 +28,7 @@ static void CuTestObjectDestroy(CuTestObject* o) {
 - (void) testAlloc;
 {	
 	CuObjectKindInfo info = {
+		"CuTestKind",
 		sizeof(CuTestObject),
 		(CuInitializer) &CuTestObjectInitialize,
 		(CuFinalizer) &CuTestObjectDestroy

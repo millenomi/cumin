@@ -11,6 +11,8 @@
 		1517281A1130068E00460F9B /* CuObject.c in Sources */ = {isa = PBXBuildFile; fileRef = 151728181130068E00460F9B /* CuObject.c */; };
 		151728261130087B00460F9B /* CuArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 151728241130087B00460F9B /* CuArray.h */; };
 		151728271130087B00460F9B /* CuArray.c in Sources */ = {isa = PBXBuildFile; fileRef = 151728251130087B00460F9B /* CuArray.c */; };
+		159114A31130A0E0000A0BC0 /* CuReleasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = 159114A11130A0E0000A0BC0 /* CuReleasePool.h */; };
+		159114A41130A0E0000A0BC0 /* CuReleasePool.c in Sources */ = {isa = PBXBuildFile; fileRef = 159114A21130A0E0000A0BC0 /* CuReleasePool.c */; };
 		15A65C9111301B6A003E8CE5 /* CuObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A65C8811301AE7003E8CE5 /* CuObjectTests.m */; };
 		15A65CD911301DC1003E8CE5 /* libCumin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libCumin.a */; };
 		15A65D0511302204003E8CE5 /* CuData.c in Sources */ = {isa = PBXBuildFile; fileRef = 15A65CEB11301F6D003E8CE5 /* CuData.c */; };
@@ -33,6 +35,9 @@
 		151728181130068E00460F9B /* CuObject.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CuObject.c; sourceTree = "<group>"; };
 		151728241130087B00460F9B /* CuArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuArray.h; sourceTree = "<group>"; };
 		151728251130087B00460F9B /* CuArray.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CuArray.c; sourceTree = "<group>"; };
+		159114A11130A0E0000A0BC0 /* CuReleasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuReleasePool.h; sourceTree = "<group>"; };
+		159114A21130A0E0000A0BC0 /* CuReleasePool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CuReleasePool.c; sourceTree = "<group>"; };
+		159115161130A5DD000A0BC0 /* Cumin-Test.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Cumin-Test.pch"; sourceTree = "<group>"; };
 		15A65C7E11301AC0003E8CE5 /* Cumin-Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Cumin-Test.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A65C7F11301AC0003E8CE5 /* Cumin-Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Cumin-Test-Info.plist"; sourceTree = "<group>"; };
 		15A65C8711301AE7003E8CE5 /* CuObjectTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuObjectTests.h; sourceTree = "<group>"; };
@@ -85,6 +90,8 @@
 				151728251130087B00460F9B /* CuArray.c */,
 				15A65CEA11301F6D003E8CE5 /* CuData.h */,
 				15A65CEB11301F6D003E8CE5 /* CuData.c */,
+				159114A11130A0E0000A0BC0 /* CuReleasePool.h */,
+				159114A21130A0E0000A0BC0 /* CuReleasePool.c */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -97,6 +104,7 @@
 				15A65C8811301AE7003E8CE5 /* CuObjectTests.m */,
 				15A65D131130226F003E8CE5 /* CuDataTests.h */,
 				15A65D141130226F003E8CE5 /* CuDataTests.m */,
+				159115161130A5DD000A0BC0 /* Cumin-Test.pch */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -127,6 +135,7 @@
 				151728191130068E00460F9B /* CuObject.h in Headers */,
 				151728261130087B00460F9B /* CuArray.h in Headers */,
 				15A65D061130220A003E8CE5 /* CuData.h in Headers */,
+				159114A31130A0E0000A0BC0 /* CuReleasePool.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +239,7 @@
 				1517281A1130068E00460F9B /* CuObject.c in Sources */,
 				151728271130087B00460F9B /* CuArray.c in Sources */,
 				15A65D0511302204003E8CE5 /* CuData.c in Sources */,
+				159114A41130A0E0000A0BC0 /* CuReleasePool.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +266,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Cumin-Test.pch";
 				INFOPLIST_FILE = "Cumin-Test-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
@@ -281,6 +292,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Cumin-Test.pch";
 				INFOPLIST_FILE = "Cumin-Test-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
