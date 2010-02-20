@@ -73,12 +73,11 @@
 		08FB7794FE84155DC02AAC07 /* Cumin */ = {
 			isa = PBXGroup;
 			children = (
+				155446A01130AD190088B9FE /* Readme.markdown */,
 				15A65C8611301AD9003E8CE5 /* Tests */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				C6A0FF2B0290797F04C91782 /* Documentation */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
-				15A65C7F11301AC0003E8CE5 /* Cumin-Test-Info.plist */,
-				155446A01130AD190088B9FE /* Readme.markdown */,
 			);
 			name = Cumin;
 			sourceTree = "<group>";
@@ -101,6 +100,7 @@
 		15A65C8611301AD9003E8CE5 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				15A65C7F11301AC0003E8CE5 /* Cumin-Test-Info.plist */,
 				15A65CBE11301D2C003E8CE5 /* SenTestingKit.framework */,
 				15A65C8711301AE7003E8CE5 /* CuObjectTests.h */,
 				15A65C8811301AE7003E8CE5 /* CuObjectTests.m */,
