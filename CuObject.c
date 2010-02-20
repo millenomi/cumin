@@ -32,3 +32,8 @@ void CuRelease(CuObject* o) {
 		free(o);
 	}
 }
+
+uint32_t CuObjectGetRetainCount(CuObject* o) {
+	return CuGetObjectBase(o)->CuRetainCount;
+}
+

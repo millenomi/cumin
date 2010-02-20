@@ -14,7 +14,7 @@
 // ~ Kind & Instance layout (immutable) ~
 
 typedef struct {
-	CuObjectKind* kind;
+	CuObjectFields;
 	CuObject** objects;
 	size_t count;
 } CuArrayActual;
@@ -62,7 +62,7 @@ CuArray* CuArrayGetEmpty() {
 CuArray* CuArrayCreateCopy(CuArray* a) {
 	size_t count = CuArrayGetCount(a);
 	CuObject** objects = alloca(sizeof(CuObject*) * count);
-	CuArrayGetAllObjects(a, &objects);
+	CuArrayGetAllObjects(a, objects);
 	return CuArrayCreate(objects, count);
 }
 

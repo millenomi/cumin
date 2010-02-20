@@ -26,9 +26,14 @@ typedef struct CuObjectKind {
 	CuObjectKindInfo* CuObjectKindInfo;
 } CuObjectKind;
 
+
+#define CuObjectFields \
+	CuObjectKind* CuObjectKind; \
+	uint32_t CuRetainCount
+
+
 typedef struct CuObjectBase {
-	CuObjectKind* CuObjectKind;
-	uint32_t CuRetainCount;
+	CuObjectFields;
 } CuObjectBase;
 
 #define CuGetObjectBase(a) ((CuObjectBase*)a)
@@ -39,3 +44,5 @@ extern void* CuAlloc(CuObjectKind* kind);
 
 extern void CuRetain(CuObject* o);
 extern void CuRelease(CuObject* o);
+
+extern uint32_t CuObjectGetRetainCount(CuObject* o);

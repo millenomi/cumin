@@ -14,7 +14,7 @@
 // ~ Layout ~
 
 struct CuData {
-	CuObjectKind* Kind;
+	CuObjectFields;
 	void* Bytes;
 	size_t Size;
 	bool OwnsBuffer;
