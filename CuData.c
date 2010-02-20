@@ -53,7 +53,7 @@ CuData* CuDataMakeNoCopy(void* bytes, size_t size) {
 	c->Size = size;
 	c->OwnsBuffer = false;
 	
-	return (CuData*) c;	
+	return CuReleaseLater(c);
 }
 
 static void CuDataFinalize(struct CuData* c) {
