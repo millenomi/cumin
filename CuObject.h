@@ -26,8 +26,13 @@ typedef struct CuObjectKindInfo {
 	CuFinalizer Destroy;
 } CuObjectKindInfo;
 
+
+#define CuObjectKindFields \
+	CuObjectKindInfo* CuObjectKindInfo
+
+
 typedef struct CuObjectKind {
-	CuObjectKindInfo* CuObjectKindInfo;
+	CuObjectKindFields;
 } CuObjectKind;
 
 
@@ -40,9 +45,12 @@ typedef struct CuObjectBase {
 	CuObjectFields;
 } CuObjectBase;
 
-#define CuGetObjectBase(a) ((CuObjectBase*)a)
-#define CuGetObjectKind(a) (CuGetObjectBase(a)->CuObjectKind)
-#define CuGetObjectKindInfo(a) (CuGetObjectBase(a)->CuObjectKind->CuObjectKindInfo)
+#define CuObjectGetBase(a) ((CuObjectBase*)a)
+#define CuObjectGetKind(a) (CuObjectGetBase(a)->CuObjectKind)
+
+static inline CuObjectKindInfo* CuObjectGetKindInfo(CuObject* o) {
+	return CuObjectGetBase(o)->CuObjectKind->CuObjectKindInfo;
+}
 
 extern void* CuAlloc(CuObjectKind* kind);
 

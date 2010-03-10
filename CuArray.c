@@ -22,13 +22,33 @@ typedef struct {
 
 static void CuArrayDestroy(CuArrayActual* a);
 
-static CuObjectKindInfo CuArrayKindInfo = {
+static CuObjectKindInfo CuArrayImmutableKindInfo = {
 	"CuArray",
 	sizeof(CuArrayActual),
 	NULL,
 	(CuFinalizer) &CuArrayDestroy
 };
-static CuObjectKind CuArrayKind = { &CuArrayKindInfo };
+
+// pseudovtable
+typedef struct {
+	CuObjectKindFields;
+	CuObject* (*ObjectAtIndex)(CuArray* a, size_t index);
+	size_t (*Count)(CuArray* a);
+	void (*AllObjects)(CuArray* a, CuObject** objects);
+} CuArrayObjectKind;
+
+
+// Immutable impls
+static CuObject* CuArrayImmutableGetObjectAtIndex(CuArray* a, size_t index);
+static size_t CuArrayImmutableGetCount(CuArray* a);
+static void CuArrayImmutableGetAllObjects(CuArray* a, CuObject** objects);
+
+static CuArrayObjectKind CuArrayImmutableKind = {
+	&CuArrayImmutableKindInfo,
+	&CuArrayImmutableGetObjectAtIndex,
+	&CuArrayImmutableGetCount,
+	&CuArrayImmutableGetAllObjects,
+};
 
 
 // ~ Constructor/Destructor (immutable) ~
@@ -40,11 +60,11 @@ static void CuArrayDestroy(CuArrayActual* me) {
 }
 
 CuArray* CuArrayMake(CuObject** objects, size_t count) {
-	CuArrayActual* me = CuAlloc(&CuArrayKind);
+	CuArrayActual* me = CuAlloc((CuObjectKind*) &CuArrayImmutableKind);
 	
 	if (count > 0) {
 		me->Objects = malloc(sizeof(CuObject*) * count);
-		memcpy(me->Objects, objects, count);
+		memcpy(me->Objects, objects, sizeof(CuObject*) * count);
 		for (size_t i = 0; i < count; i++)
 			CuRetain(me->Objects[i]);
 	} else
@@ -70,23 +90,53 @@ CuArray* CuArrayMakeCopy(CuArray* a) {
 
 // ~ Accessing ~
 
+static CuObject* CuArrayImmutableGetObjectAtIndex(CuArray* a, size_t index) {
+	return CuArrayGetActual(a)->Objects[index];
+}
+
+static size_t CuArrayImmutableGetCount(CuArray* a) {
+	return CuArrayGetActual(a)->Count;	
+}
+
+static void CuArrayImmutableGetAllObjects(CuArray* a, CuObject** objects) {
+	memcpy(CuArrayGetActual(a)->Objects, objects, CuArrayGetActual(a)->Count);
+}
+
 CuObject* CuArrayGetObjectAtIndex(CuArray* array, size_t index) {
-	// TODO mutable
-	return CuArrayGetActual(array)->Objects[index];
+	return ((CuArrayObjectKind*) CuObjectGetKind(array))->ObjectAtIndex(array, index);
 }
 
 size_t CuArrayGetCount(CuArray* array) {
-	// TODO mutable
-	return CuArrayGetActual(array)->Count;
+	return ((CuArrayObjectKind*) CuObjectGetKind(array))->Count(array);
 }
 
-void CuArrayGetAllObjects(CuArray* a, CuObject** objects) {
-	// TODO mutable
-	memcpy(CuArrayGetActual(a)->Objects, objects, CuArrayGetActual(a)->Count);
+void CuArrayGetAllObjects(CuArray* array, CuObject** objects) {
+	((CuArrayObjectKind*) CuObjectGetKind(array))->AllObjects(array, objects);
 }
 
 
 // ~ Mutation methods ~
+
+//static CuObject* CuArrayMutableGetObjectAtIndex(CuArray* a, size_t index);
+//static size_t CuArrayMutableGetCount(CuArray* a);
+//static void CuArrayMutableGetAllObjects(CuArray* a, CuObject** objects);
+//
+//static CuArrayObjectKind CuArrayImmutableKind = {
+//	&CuArrayKindInfo,
+//	&CuArrayMutableGetObjectAtIndex,
+//	&CuArrayMutableGetCount,
+//	&CuArrayMutableGetAllObjects,
+//};
+//
+//typedef struct {
+//	CuObjectFields;
+//	
+//
+//CuObject* CuArrayMutableGetObjectAtIndex(CuArray* a, size_t index);
+//size_t CuArrayMutableGetCount(CuArray* a);
+//void CuArrayMutableGetAllObjects(CuArray* a, CuObject** objects);
+
+
 
 // TODO
 void CuArrayInsertObjectAtIndex(CuMutableArray* a, size_t index) {}

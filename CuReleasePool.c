@@ -10,6 +10,7 @@
 #include "CuReleasePool.h"
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 enum {
 	CuReleasePoolEntryPush,
@@ -24,6 +25,9 @@ typedef struct {
 
 static CuReleasePoolEntry* CuReleasePoolEntriesListTop = NULL;
 
+void _CuReleasePoolDebugDump();
+void _CuReleasePoolDebugDumpEntry(CuReleasePoolEntry* entry);
+
 void CuReleasePoolPush() {
 	CuReleasePoolEntry* e = malloc(sizeof(CuReleasePoolEntry));
 	e->Type = CuReleasePoolEntryPush;
@@ -35,20 +39,45 @@ void CuReleasePoolPush() {
 void CuReleasePoolPop() {
 	CuReleasePoolEntry* entry = CuReleasePoolEntriesListTop;
 	while (entry) {
-		
-		bool entryIsPush = (entry->Type == CuReleasePoolEntryPush);
-		
-		if (entry->Type == CuReleasePoolEntryReleaseLater)
-			CuRelease(entry->Object);
-		
-		CuReleasePoolEntriesListTop = entry->NextEntry;
-		free(entry);
-		
-		if (entryIsPush)
+		if (entry->Type == CuReleasePoolEntryPush)
 			break;
 
-		entry = CuReleasePoolEntriesListTop;
+		_CuReleasePoolDebugDumpEntry(entry);
+		
+		CuRelease(entry->Object);
+		CuReleasePoolEntry* self = entry;
+		entry = entry->NextEntry;
+		free(self);
 	}
+	CuReleasePoolEntriesListTop = entry;
+}
+
+void _CuReleasePoolDebugDump() {
+	CuReleasePoolEntry* entry = CuReleasePoolEntriesListTop;
+	while (entry) {
+		_CuReleasePoolDebugDumpEntry(entry);
+		entry = entry->NextEntry;
+	}
+	fprintf(stderr, "\n");
+}
+
+void _CuReleasePoolDebugDumpEntry(CuReleasePoolEntry* entry) {
+	fprintf(stderr, "Entry (%p): ", entry);
+	switch (entry->Type) {
+		case CuReleasePoolEntryPush:
+			fprintf(stderr, "PUSH.");
+			break;
+			
+		case CuReleasePoolEntryReleaseLater: {
+			fprintf(stderr, "RELEASE LATER for ");
+			CuShow(entry->Object);
+		}
+			break;
+			
+		default:
+			break;
+	}
+	fprintf(stderr, "\n");	
 }
 
 extern CuObject* CuReleaseLater(CuObject* o) {
@@ -58,6 +87,8 @@ extern CuObject* CuReleaseLater(CuObject* o) {
 	e->NextEntry = CuReleasePoolEntriesListTop;
 	
 	CuReleasePoolEntriesListTop = e;	
+
+	_CuReleasePoolDebugDump();
 	
 	return o;
 }

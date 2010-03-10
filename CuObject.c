@@ -14,32 +14,40 @@
 void* CuAlloc(CuObjectKind* kind) {
 	CuObjectBase* b = calloc(kind->CuObjectKindInfo->InstancesSize, 1);
 	b->CuObjectKind = kind;
-	b->CuRetainCount = 0;
+	b->CuRetainCount = 1;
 	if (kind->CuObjectKindInfo->Initialize)
 		kind->CuObjectKindInfo->Initialize(b);
 	return b;
 }
 
 CuObject* CuRetain(CuObject* o) {
-	CuGetObjectBase(o)->CuRetainCount++;
+	fprintf(stderr, "Retaining object: "); CuShow(o); fprintf(stderr, "\n");
+	CuObjectGetBase(o)->CuRetainCount++;
+	fprintf(stderr, "Retain count of object: "); CuShow(o); fprintf(stderr, "is %d. \n", (int) CuObjectGetBase(o)->CuRetainCount);
 	return o;
 }
 
 void CuRelease(CuObject* o) {
-	if (CuGetObjectBase(o)->CuRetainCount > 1) {
-		CuGetObjectBase(o)->CuRetainCount--;
+	fprintf(stderr, "Releasing object: "); CuShow(o); fprintf(stderr, "\n");
+	if (CuObjectGetBase(o)->CuRetainCount > 1) {
+		CuObjectGetBase(o)->CuRetainCount--;
 	} else {
-		if (CuGetObjectKindInfo(o)->Destroy)
-			CuGetObjectKindInfo(o)->Destroy(o);
+		fprintf(stderr, "Destroying object: ");
+		CuShow(o);
+		fprintf(stderr, "\n");
+		
+		if (CuObjectGetKindInfo(o)->Destroy)
+			CuObjectGetKindInfo(o)->Destroy(o);
 		free(o);
 	}
 }
 
 uint32_t CuObjectGetRetainCount(CuObject* o) {
-	return CuGetObjectBase(o)->CuRetainCount;
+	return CuObjectGetBase(o)->CuRetainCount;
 }
 
 void CuShow(CuObject* o) {
-	fprintf(stderr, "<%s %p>", CuGetObjectKindInfo(o)->Name, o);
+	fprintf(stderr, "<%s %p>", CuObjectGetKindInfo(o)->Name, o);
 	fflush(stderr);
 }
+

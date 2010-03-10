@@ -18,6 +18,7 @@
 		15A65D0511302204003E8CE5 /* CuData.c in Sources */ = {isa = PBXBuildFile; fileRef = 15A65CEB11301F6D003E8CE5 /* CuData.c */; };
 		15A65D061130220A003E8CE5 /* CuData.h in Headers */ = {isa = PBXBuildFile; fileRef = 15A65CEA11301F6D003E8CE5 /* CuData.h */; };
 		15A65D151130226F003E8CE5 /* CuDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A65D141130226F003E8CE5 /* CuDataTests.m */; };
+		15F60846113D591A007039C9 /* Cumin.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F60845113D5902007039C9 /* Cumin.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		15A65CEB11301F6D003E8CE5 /* CuData.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CuData.c; sourceTree = "<group>"; };
 		15A65D131130226F003E8CE5 /* CuDataTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuDataTests.h; sourceTree = "<group>"; };
 		15A65D141130226F003E8CE5 /* CuDataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CuDataTests.m; sourceTree = "<group>"; };
+		15F60845113D5902007039C9 /* Cumin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cumin.h; sourceTree = "<group>"; };
 		D2AAC046055464E500DB518D /* libCumin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCumin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -85,6 +87,7 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				15F60845113D5902007039C9 /* Cumin.h */,
 				151728171130068E00460F9B /* CuObject.h */,
 				151728181130068E00460F9B /* CuObject.c */,
 				151728241130087B00460F9B /* CuArray.h */,
@@ -134,6 +137,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15F60846113D591A007039C9 /* Cumin.h in Headers */,
 				151728191130068E00460F9B /* CuObject.h in Headers */,
 				151728261130087B00460F9B /* CuArray.h in Headers */,
 				15A65D061130220A003E8CE5 /* CuData.h in Headers */,
@@ -269,6 +273,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cumin-Test.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "Cumin-Test-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
