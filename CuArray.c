@@ -22,16 +22,9 @@ typedef struct {
 
 static void CuArrayDestroy(CuArrayActual* a);
 
-static CuObjectKindInfo CuArrayImmutableKindInfo = {
-	"CuArray",
-	sizeof(CuArrayActual),
-	NULL,
-	(CuFinalizer) &CuArrayDestroy
-};
-
 // pseudovtable
 typedef struct {
-	CuObjectKindFields;
+	CuObjectKindInfoFields;
 	CuObject* (*ObjectAtIndex)(CuArray* a, size_t index);
 	size_t (*Count)(CuArray* a);
 	void (*AllObjects)(CuArray* a, CuObject** objects);
@@ -44,7 +37,12 @@ static size_t CuArrayImmutableGetCount(CuArray* a);
 static void CuArrayImmutableGetAllObjects(CuArray* a, CuObject** objects);
 
 static CuArrayObjectKind CuArrayImmutableKind = {
-	&CuArrayImmutableKindInfo,
+	// Kind info
+	"CuArray",
+	sizeof(CuArrayActual),
+	NULL,
+	(CuFinalizer) &CuArrayDestroy,
+	
 	&CuArrayImmutableGetObjectAtIndex,
 	&CuArrayImmutableGetCount,
 	&CuArrayImmutableGetAllObjects,
@@ -60,7 +58,7 @@ static void CuArrayDestroy(CuArrayActual* me) {
 }
 
 CuArray* CuArrayMake(CuObject** objects, size_t count) {
-	CuArrayActual* me = CuAlloc((CuObjectKind*) &CuArrayImmutableKind);
+	CuArrayActual* me = CuAlloc((CuObjectKindInfo*) &CuArrayImmutableKind);
 	
 	if (count > 0) {
 		me->Objects = malloc(sizeof(CuObject*) * count);
@@ -103,15 +101,15 @@ static void CuArrayImmutableGetAllObjects(CuArray* a, CuObject** objects) {
 }
 
 CuObject* CuArrayGetObjectAtIndex(CuArray* array, size_t index) {
-	return ((CuArrayObjectKind*) CuObjectGetKind(array))->ObjectAtIndex(array, index);
+	return ((CuArrayObjectKind*) CuObjectGetKindInfo((CuObject*) array))->ObjectAtIndex(array, index);
 }
 
 size_t CuArrayGetCount(CuArray* array) {
-	return ((CuArrayObjectKind*) CuObjectGetKind(array))->Count(array);
+	return ((CuArrayObjectKind*) CuObjectGetKindInfo((CuObject*) array))->Count(array);
 }
 
 void CuArrayGetAllObjects(CuArray* array, CuObject** objects) {
-	((CuArrayObjectKind*) CuObjectGetKind(array))->AllObjects(array, objects);
+	((CuArrayObjectKind*) CuObjectGetKindInfo((CuObject*) array))->AllObjects(array, objects);
 }
 
 

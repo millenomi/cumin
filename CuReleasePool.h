@@ -15,8 +15,6 @@
 extern void CuReleasePoolPush();
 extern void CuReleasePoolPop();
 
-extern CuObject* CuReleaseLater(CuObject* o);
-
 #define CuReleasePoolScope() \
 	int CuReleasePoolScope##__LINE__ __attribute__((cleanup(_CuReleasePoolPopForScope))) = 0; CuReleasePoolPush()
 extern void _CuReleasePoolPopForScope(int* i);

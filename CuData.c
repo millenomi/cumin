@@ -32,13 +32,11 @@ static CuObjectKindInfo CuDataKindInfo = {
 	(CuFinalizer) &CuDataFinalize
 };
 
-static CuObjectKind CuDataKind = { &CuDataKindInfo };
-
 
 // ~ Init/Finalize ~
 
 CuData* CuDataMake(void* bytes, size_t size) {
-	struct CuData* c = CuAlloc(&CuDataKind);
+	struct CuData* c = CuAlloc(&CuDataKindInfo);
 	c->Bytes = malloc(size);
 	memcpy(c->Bytes, bytes, size);
 	c->Size = size;
@@ -48,7 +46,7 @@ CuData* CuDataMake(void* bytes, size_t size) {
 }
 
 CuData* CuDataMakeNoCopy(void* bytes, size_t size) {
-	struct CuData* c = CuAlloc(&CuDataKind);
+	struct CuData* c = CuAlloc(&CuDataKindInfo);
 	c->Bytes = bytes;
 	c->Size = size;
 	c->OwnsBuffer = false;

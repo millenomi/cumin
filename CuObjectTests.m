@@ -9,7 +9,7 @@
 #import "CuObjectTests.h"
 
 typedef struct {
-	CuObjectKind* kind;
+	CuObjectFields;
 	BOOL initCalled;
 	BOOL* destroyCalled;
 } CuTestObject;
@@ -27,18 +27,17 @@ static void CuTestObjectDestroy(CuTestObject* o) {
 
 - (void) testAlloc;
 {	
-	CuObjectKindInfo info = {
+	CuObjectKindInfo kind = {
 		"CuTestKind",
 		sizeof(CuTestObject),
 		(CuInitializer) &CuTestObjectInitialize,
 		(CuFinalizer) &CuTestObjectDestroy
 	};
 	
-	CuObjectKind kind = { &info };
-	
 	CuTestObject* o = CuAlloc(&kind);
 	STAssertTrue(o->initCalled, @"Init called");
 	STAssertTrue(o->destroyCalled == NULL, @"No destroy variable set");
+	STAssertTrue(CuObjectGetRetainCount(o) == 1, @"Just-alloc'd objects have a retain count of 1.");
 	
 	BOOL destroyCalled = NO;
 	o->destroyCalled = &destroyCalled;

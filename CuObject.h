@@ -14,52 +14,70 @@
 #ifndef Cu__Object_h__
 #define Cu__Object_h__ 1
 
+// ---------------------------------
+// Kind and object types.
+
 typedef void CuObject;
 
 typedef void (*CuInitializer)(void* o);
 typedef void (*CuFinalizer)(void* o);
 
+#define CuObjectKindInfoFields \
+	char* Name; \
+	size_t InstancesSize; \
+	CuInitializer Initialize; \
+	CuFinalizer Destroy
+
 typedef struct CuObjectKindInfo {
-	char* Name; // must remain valid as long as this struct does.
-	size_t InstancesSize;
-	CuInitializer Initialize;
-	CuFinalizer Destroy;
+	CuObjectKindInfoFields;
 } CuObjectKindInfo;
 
 
-#define CuObjectKindFields \
-	CuObjectKindInfo* CuObjectKindInfo
-
-
-typedef struct CuObjectKind {
-	CuObjectKindFields;
-} CuObjectKind;
-
-
 #define CuObjectFields \
-	CuObjectKind* CuObjectKind; \
+	CuObjectKindInfo* CuObjectKind; \
 	uint32_t CuRetainCount
-
 
 typedef struct CuObjectBase {
 	CuObjectFields;
 } CuObjectBase;
 
-#define CuObjectGetBase(a) ((CuObjectBase*)a)
-#define CuObjectGetKind(a) (CuObjectGetBase(a)->CuObjectKind)
+// ---------------------------------
+// Accessors to retrieve object info and kinds
 
-static inline CuObjectKindInfo* CuObjectGetKindInfo(CuObject* o) {
-	return CuObjectGetBase(o)->CuObjectKind->CuObjectKindInfo;
+static inline CuObjectBase* CuObjectGetBase(CuObject* object) {
+	return (CuObjectBase*) object;
 }
 
-extern void* CuAlloc(CuObjectKind* kind);
+static inline CuObjectKindInfo* CuObjectGetKindInfo(CuObject* o) {
+	return CuObjectGetBase(o)->CuObjectKind;
+}
 
+static inline uint32_t CuObjectGetRetainCount(CuObject* o) {
+	return CuObjectGetBase(o)->CuRetainCount;
+}
+
+// ---------------------------------
+// Polymorphic function for all objects.
+
+// Allocates an object. The object returned has been retained
+// and will need to be released later.
+extern void* CuAlloc(CuObjectKindInfo* kind);
+
+// Keeps an object around by raising its retain count.
+// Needs to be balanced by a CuRelease.
 extern CuObject* CuRetain(CuObject* o);
+
+// Reduces an object's retain count, balancing a CuRetain or
+// CuAlloc.
 extern void CuRelease(CuObject* o);
 
-extern uint32_t CuObjectGetRetainCount(CuObject* o);
+// Reduces an object's retain count later for some amount of
+// later. (See CuReleasePoolPop().)
+extern CuObject* CuReleaseLater(CuObject* o);
 
+// Prints a short description of the object. TODO
 extern void CuShow(CuObject* o);
+
 
 #include "CuReleasePool.h"
 
