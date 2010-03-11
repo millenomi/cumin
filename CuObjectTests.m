@@ -50,4 +50,23 @@ static void CuTestObjectDestroy(CuTestObject* o) {
 	STAssertTrue(destroyCalled, @"Destroy was called");
 }
 
+- (void) testStuffBehavesCorrectlyInTheFaceOfMultipleRetainsAndReleases;
+{
+	CuReleasePoolPush();
+	
+	char* test = "This is a test actually!";
+	CuData* testData = CuDataMake(test, strlen(test) + 1);
+	CuRetain(testData);
+	CuRetain(testData);
+	
+	CuObject* object[] = { testData };
+	(void) CuArrayMake(object, 1);
+
+	CuRelease(testData);
+
+	CuReleasePoolPop();
+	
+	CuRelease(testData);
+}
+
 @end

@@ -8,6 +8,8 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 #import "CuObject.h"
+#import "CuData.h"
+#import "CuArray.h"
 
 @interface CuObjectTests : SenTestCase {
 
