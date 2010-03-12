@@ -10,14 +10,8 @@
 
 typedef struct {
 	CuObjectFields;
-	BOOL initCalled;
 	BOOL* destroyCalled;
 } CuTestObject;
-
-static void CuTestObjectInitialize(CuTestObject* o) {
-	o->initCalled = YES;
-	o->destroyCalled = NULL;
-}
 
 static void CuTestObjectDestroy(CuTestObject* o) {
 	*(o->destroyCalled) = YES;
@@ -27,15 +21,13 @@ static void CuTestObjectDestroy(CuTestObject* o) {
 
 - (void) testAlloc;
 {	
-	CuObjectKindInfo kind = {
+	CuObjectKind kind = {
 		"CuTestKind",
 		sizeof(CuTestObject),
-		(CuInitializer) &CuTestObjectInitialize,
 		(CuFinalizer) &CuTestObjectDestroy
 	};
 	
 	CuTestObject* o = CuAlloc(&kind);
-	STAssertTrue(o->initCalled, @"Init called");
 	STAssertTrue(o->destroyCalled == NULL, @"No destroy variable set");
 	STAssertTrue(CuObjectGetRetainCount(o) == 1, @"Just-alloc'd objects have a retain count of 1.");
 	

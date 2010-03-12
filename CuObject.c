@@ -11,12 +11,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void* CuAlloc(CuObjectKindInfo* kind) {
+void* CuAlloc(CuObjectKind* kind) {
 	CuObjectBase* b = calloc(kind->InstancesSize, 1);
 	b->CuObjectKind = kind;
 	b->CuRetainCount = 1;
-	if (kind->Initialize)
-		kind->Initialize(b);
 	return b;
 }
 
@@ -36,8 +34,8 @@ void CuRelease(CuObject* o) {
 		CuShow(o);
 		fprintf(stderr, "\n");
 		
-		if (CuObjectGetKindInfo(o)->Destroy)
-			CuObjectGetKindInfo(o)->Destroy(o);
+		if (CuObjectGetKindInfo(o)->Finalize)
+			CuObjectGetKindInfo(o)->Finalize(o);
 		free(o);
 	}
 }

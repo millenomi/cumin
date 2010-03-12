@@ -19,22 +19,20 @@
 
 typedef void CuObject;
 
-typedef void (*CuInitializer)(void* o);
 typedef void (*CuFinalizer)(void* o);
 
 #define CuObjectKindInfoFields \
 	char* Name; \
 	size_t InstancesSize; \
-	CuInitializer Initialize; \
-	CuFinalizer Destroy
+	CuFinalizer Finalize
 
-typedef struct CuObjectKindInfo {
+typedef struct {
 	CuObjectKindInfoFields;
-} CuObjectKindInfo;
+} CuObjectKind;
 
 
 #define CuObjectFields \
-	CuObjectKindInfo* CuObjectKind; \
+	CuObjectKind* CuObjectKind; \
 	uint32_t CuRetainCount
 
 typedef struct CuObjectBase {
@@ -48,7 +46,7 @@ static inline CuObjectBase* CuObjectGetBase(CuObject* object) {
 	return (CuObjectBase*) object;
 }
 
-static inline CuObjectKindInfo* CuObjectGetKindInfo(CuObject* o) {
+static inline CuObjectKind* CuObjectGetKindInfo(CuObject* o) {
 	return CuObjectGetBase(o)->CuObjectKind;
 }
 
@@ -61,7 +59,7 @@ static inline uint32_t CuObjectGetRetainCount(CuObject* o) {
 
 // Allocates an object. The object returned has been retained
 // and will need to be released later.
-extern void* CuAlloc(CuObjectKindInfo* kind);
+extern void* CuAlloc(CuObjectKind* kind);
 
 // Keeps an object around by raising its retain count.
 // Needs to be balanced by a CuRelease.

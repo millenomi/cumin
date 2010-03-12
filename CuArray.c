@@ -8,8 +8,10 @@
  */
 
 #include "CuArray.h"
-#import <stdlib.h>
+#include <stdlib.h>
 #include <string.h>
+
+#include "CuArray_Private.h"
 
 // ~ Kind & Instance layout (immutable) ~
 
@@ -22,15 +24,6 @@ typedef struct {
 
 static void CuArrayDestroy(CuArrayActual* a);
 
-// pseudovtable
-typedef struct {
-	CuObjectKindInfoFields;
-	CuObject* (*ObjectAtIndex)(CuArray* a, size_t index);
-	size_t (*Count)(CuArray* a);
-	void (*AllObjects)(CuArray* a, CuObject** objects);
-} CuArrayObjectKind;
-
-
 // Immutable impls
 static CuObject* CuArrayImmutableGetObjectAtIndex(CuArray* a, size_t index);
 static size_t CuArrayImmutableGetCount(CuArray* a);
@@ -40,7 +33,6 @@ static CuArrayObjectKind CuArrayImmutableKind = {
 	// Kind info
 	"CuArray",
 	sizeof(CuArrayActual),
-	NULL,
 	(CuFinalizer) &CuArrayDestroy,
 	
 	&CuArrayImmutableGetObjectAtIndex,
@@ -58,7 +50,7 @@ static void CuArrayDestroy(CuArrayActual* me) {
 }
 
 CuArray* CuArrayMake(CuObject** objects, size_t count) {
-	CuArrayActual* me = CuAlloc((CuObjectKindInfo*) &CuArrayImmutableKind);
+	CuArrayActual* me = CuAlloc((CuObjectKind*) &CuArrayImmutableKind);
 	
 	if (count > 0) {
 		me->Objects = malloc(sizeof(CuObject*) * count);
@@ -112,32 +104,3 @@ void CuArrayGetAllObjects(CuArray* array, CuObject** objects) {
 	((CuArrayObjectKind*) CuObjectGetKindInfo((CuObject*) array))->AllObjects(array, objects);
 }
 
-
-// ~ Mutation methods ~
-
-//static CuObject* CuArrayMutableGetObjectAtIndex(CuArray* a, size_t index);
-//static size_t CuArrayMutableGetCount(CuArray* a);
-//static void CuArrayMutableGetAllObjects(CuArray* a, CuObject** objects);
-//
-//static CuArrayObjectKind CuArrayImmutableKind = {
-//	&CuArrayKindInfo,
-//	&CuArrayMutableGetObjectAtIndex,
-//	&CuArrayMutableGetCount,
-//	&CuArrayMutableGetAllObjects,
-//};
-//
-//typedef struct {
-//	CuObjectFields;
-//	
-//
-//CuObject* CuArrayMutableGetObjectAtIndex(CuArray* a, size_t index);
-//size_t CuArrayMutableGetCount(CuArray* a);
-//void CuArrayMutableGetAllObjects(CuArray* a, CuObject** objects);
-
-
-
-// TODO
-void CuArrayInsertObjectAtIndex(CuMutableArray* a, size_t index) {}
-void CuArrayRemoveObjectAtIndex(CuMutableArray* a, size_t index) {}
-
-void CuArrayAddObject(CuMutableArray* a, CuObject* o) {}

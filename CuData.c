@@ -25,10 +25,9 @@ struct CuData {
 // Kind
 static void CuDataFinalize(struct CuData* d);
 
-static CuObjectKindInfo CuDataKindInfo = {
+static CuObjectKind CuDataKindInfo = {
 	"CuData",
 	sizeof(struct CuData),
-	NULL,
 	(CuFinalizer) &CuDataFinalize
 };
 

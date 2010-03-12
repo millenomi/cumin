@@ -12,21 +12,14 @@
 #ifndef Cu__Array_h__
 #define Cu__Array_h__ 1
 
-typedef void CuMutableArray;
-typedef const CuMutableArray CuArray;
+typedef void CuArray;
 
 extern CuArray* CuArrayMake(CuObject** objects, size_t count);
 extern CuArray* CuArrayGetEmpty();
-extern CuMutableArray* CuArrayCreateMutable(); // TODO
 extern CuArray* CuArrayMakeCopy(CuArray* a);
 
 extern CuObject* CuArrayGetObjectAtIndex(CuArray* a, size_t index);
 extern size_t CuArrayGetCount(CuArray* a);
 extern void CuArrayGetAllObjects(CuArray* a, CuObject** objects);
-
-extern void CuArrayInsertObjectAtIndex(CuMutableArray* a, size_t index);
-extern void CuArrayRemoveObjectAtIndex(CuMutableArray* a, size_t index);
-
-extern void CuArrayAddObject(CuMutableArray* a, CuObject* o);
 
 #endif
