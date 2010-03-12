@@ -19,7 +19,7 @@
 	CuData* cuminData = CuDataMake((void*)[cocoaData bytes], [cocoaData length]);
 	
 	STAssertTrue(CuDataGetBytes(cuminData) != NULL, @"Data has a backing store");
-	STAssertEquals(CuDataGetSize(cuminData), [cocoaData length], @"Data is of the right length");
+	STAssertTrue(CuDataGetSize(cuminData) == [cocoaData length], @"Data is of the right length");
 	STAssertTrue([cocoaData bytes] != CuDataGetBytes(cuminData), @"Data was copied");
 	
 	NSData* cocoaData2 = [NSData dataWithBytes:CuDataGetBytes(cuminData) length:CuDataGetSize(cuminData)];
@@ -28,8 +28,8 @@
 	cuminData = CuDataMakeNoCopy((void*)[cocoaData bytes], [cocoaData length]);
 	
 	STAssertTrue(CuDataGetBytes(cuminData) != NULL, @"Data has a backing store");
-	STAssertEquals(CuDataGetSize(cuminData), [cocoaData length], @"Data is of the right length");
-	STAssertEquals([cocoaData bytes], CuDataGetBytes(cuminData), @"Data was NOT copied");
+	STAssertTrue(CuDataGetSize(cuminData) == [cocoaData length], @"Data is of the right length");
+	STAssertTrue([cocoaData bytes] == CuDataGetBytes(cuminData), @"Data was NOT copied");
 	
 	STAssertEqualObjects(cocoaData, cocoaData2, @"Original buffer wasn't clobbered by release");
 }
