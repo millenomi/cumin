@@ -44,7 +44,7 @@ static CuArrayObjectKind CuArrayImmutableKind = {
 // ~ Constructor/Destructor (immutable) ~
 
 static void CuArrayDestroy(CuArrayActual* me) {
-	for (size_t i = 0; i < me->Count; i++)
+	size_t i; for (i = 0; i < me->Count; i++)
 		CuRelease(me->Objects[i]);
 	free(me->Objects);
 }
@@ -55,7 +55,7 @@ CuArray* CuArrayMake(CuObject** objects, size_t count) {
 	if (count > 0) {
 		me->Objects = malloc(sizeof(CuObject*) * count);
 		memcpy(me->Objects, objects, sizeof(CuObject*) * count);
-		for (size_t i = 0; i < count; i++)
+		size_t i; for (i = 0; i < count; i++)
 			CuRetain(me->Objects[i]);
 	} else
 		me->Objects = NULL;
