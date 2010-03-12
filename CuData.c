@@ -34,7 +34,7 @@ static CuObjectKind CuDataKindInfo = {
 
 // ~ Init/Finalize ~
 
-CuData* CuDataMake(void* bytes, size_t size) {
+CuData* CuDataMake(const void* bytes, size_t size) {
 	struct CuData* c = CuAlloc(&CuDataKindInfo);
 	c->Bytes = malloc(size);
 	memcpy(c->Bytes, bytes, size);
@@ -44,9 +44,9 @@ CuData* CuDataMake(void* bytes, size_t size) {
 	return CuReleaseLater(c);
 }
 
-CuData* CuDataMakeNoCopy(void* bytes, size_t size) {
+CuData* CuDataMakeNoCopy(const void* bytes, size_t size) {
 	struct CuData* c = CuAlloc(&CuDataKindInfo);
-	c->Bytes = bytes;
+	c->Bytes = (void*) bytes;
 	c->Size = size;
 	c->OwnsBuffer = false;
 	

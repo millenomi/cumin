@@ -14,8 +14,8 @@
 
 typedef void CuData;
 
-extern CuData* CuDataMake(void* bytes, size_t size);
-extern CuData* CuDataMakeNoCopy(void* bytes, size_t size);
+extern CuData* CuDataMake(const void* bytes, size_t size);
+extern CuData* CuDataMakeNoCopy(const void* bytes, size_t size);
 
 extern const void* CuDataGetBytes(CuData* data);
 extern size_t CuDataGetSize(CuData* data);
