@@ -24,7 +24,7 @@ Cumin's RULES are as follows:
 
 * Objects returned by CuAlloc() and CuRetain() MUST be balanced by a CuRelease() or CuReleaseLater().
 
-* Objects returned by ANY OTHER FUNCTION must NOT be released, and is only valid until this function returns (and can be returned), or until a release pool is popped via CuReleasePoolPop().
+* Objects returned by ANY OTHER FUNCTION must NOT be released, and are only valid until this function returns (and can be returned), or until a release pool is popped via CuReleasePoolPop(). To keep such an object around past these boundaries, you must retain it with a CuRetain() call.
 
 Please note that unlike Core Foundation, 'Create' and 'Copy' do not have a particular meaning. Additionally, unlike Objective-C, 'new' has no particular meaning. If a function with that word in its name returns an object, it must be retained to be kept past this function.
 
