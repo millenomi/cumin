@@ -19,6 +19,9 @@ void* CuAlloc(CuObjectKind* kind) {
 }
 
 CuObject* CuRetain(CuObject* o) {
+	if (!o)
+		return NULL;
+	
 	fprintf(stderr, "Retaining object: "); CuShow(o); fprintf(stderr, "\n");
 	CuObjectGetBase(o)->CuRetainCount++;
 	fprintf(stderr, "Retain count of object: "); CuShow(o); fprintf(stderr, "is %d. \n", (int) CuObjectGetBase(o)->CuRetainCount);
@@ -26,6 +29,9 @@ CuObject* CuRetain(CuObject* o) {
 }
 
 void CuRelease(CuObject* o) {
+	if (!o)
+		return;
+
 	fprintf(stderr, "Releasing object: "); CuShow(o); fprintf(stderr, "\n");
 	if (CuObjectGetBase(o)->CuRetainCount > 1) {
 		CuObjectGetBase(o)->CuRetainCount--;
