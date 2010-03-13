@@ -20,15 +20,19 @@ Cumin is a small library providing base services often used in apps. The goal is
 
 Cumin takes an approach similar to Core Foundation and Cocoa by having memory management rules that apply to the whole framework. These are more similar to Cocoa's than Core Foundation's (see [THE (original) RULES](http://developer.apple.com/mac/library/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmRules.html) for more information).
 
+(They're all-uppercase because they're important in their respective scopes, by the way.)
+
 Cumin's RULES are as follows:
 
-* Objects returned by CuAlloc() and CuRetain() MUST be balanced by a CuRelease() or CuReleaseLater().
+* Objects returned by `CuAlloc()` and `CuRetain()` **must** be balanced by a `CuRelease()` or `CuReleaseLater()`.
 
-* Objects returned by ANY OTHER FUNCTION must NOT be released, and are only valid until this function returns (and can be returned), or until a release pool is popped via CuReleasePoolPop(). To keep such an object around past these boundaries, you must retain it with a CuRetain() call.
+* Objects returned by ANY OTHER FUNCTION must NOT be released, and **are only valid until this function returns**, or **until a release pool is popped** via `CuReleasePoolPop()`. You **can** return these objects to the caller, though. To keep such an object around past these boundaries, you must retain it with a `CuRetain()` call (which by the rule above you must pair with a release call).
 
-Please note that unlike Core Foundation, 'Create' and 'Copy' do not have a particular meaning. Additionally, unlike Objective-C, 'new' has no particular meaning. If a function with that word in its name returns an object, it must be retained to be kept past this function.
+These RULES guarantee two things: no leaks, and no dangling pointers. Follow them and be happy.
 
-Finally: all Cumin functions **require** a release pool (Cumin's version of Cocoa's autorelease pools) in place before calling. All callbacks coming from Cumin code can expect that there will be one alraedy in place; however, all functions called from other sources **must** push a release pool on the stack and pop it when finished as follows:
+Please note that unlike Core Foundation, 'Create' and 'Copy' do not have a particular meaning (and all object constructors, such as, say, `CuNumberMakeFromInteger()`, return objects that must be `CuRetain()`ed to be kept). Additionally, unlike Objective-C, 'new' has no particular meaning. If a function with that word in its name returns an object, it must be retained to be kept past this function.
+
+Finally: all Cumin functions **require** a release pool (Cumin's version of Cocoa's autorelease pools) in place before calling. All callbacks coming from Cumin code can expect that there will be one already in place; however, all functions called from other sources **must** push a release pool on the stack and pop it when finished as follows:
 
 	void MyFunctionCalledFromElsewhere() {
 		CuReleasePoolPush();
