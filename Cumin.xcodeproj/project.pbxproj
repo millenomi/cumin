@@ -11,6 +11,10 @@
 		1517281A1130068E00460F9B /* CuObject.c in Sources */ = {isa = PBXBuildFile; fileRef = 151728181130068E00460F9B /* CuObject.c */; };
 		151728261130087B00460F9B /* CuArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 151728241130087B00460F9B /* CuArray.h */; };
 		151728271130087B00460F9B /* CuArray.c in Sources */ = {isa = PBXBuildFile; fileRef = 151728251130087B00460F9B /* CuArray.c */; };
+		1577F673114B913200CB187A /* CuString.h in Headers */ = {isa = PBXBuildFile; fileRef = 1577F671114B913200CB187A /* CuString.h */; };
+		1577F674114B913200CB187A /* CuString.c in Sources */ = {isa = PBXBuildFile; fileRef = 1577F672114B913200CB187A /* CuString.c */; };
+		1577F677114B931000CB187A /* CuRange.h in Headers */ = {isa = PBXBuildFile; fileRef = 1577F676114B931000CB187A /* CuRange.h */; };
+		1577F67A114B93B300CB187A /* CuCompilerTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 1577F679114B93B300CB187A /* CuCompilerTools.h */; };
 		158344B6114ABD0A00394807 /* CuArrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 158344B5114ABD0A00394807 /* CuArrayTests.m */; };
 		158344B7114ABD2100394807 /* CuMutableArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 15882EDB114A62760013D292 /* CuMutableArray.h */; };
 		158344B8114ABD2600394807 /* CuMutableArray.c in Sources */ = {isa = PBXBuildFile; fileRef = 15882EDC114A62760013D292 /* CuMutableArray.c */; };
@@ -42,6 +46,10 @@
 		151728241130087B00460F9B /* CuArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuArray.h; sourceTree = "<group>"; };
 		151728251130087B00460F9B /* CuArray.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CuArray.c; sourceTree = "<group>"; };
 		155446A01130AD190088B9FE /* Readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.markdown; sourceTree = "<group>"; };
+		1577F671114B913200CB187A /* CuString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuString.h; sourceTree = "<group>"; };
+		1577F672114B913200CB187A /* CuString.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CuString.c; sourceTree = "<group>"; };
+		1577F676114B931000CB187A /* CuRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuRange.h; sourceTree = "<group>"; };
+		1577F679114B93B300CB187A /* CuCompilerTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuCompilerTools.h; sourceTree = "<group>"; };
 		158344B4114ABD0A00394807 /* CuArrayTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuArrayTests.h; sourceTree = "<group>"; };
 		158344B5114ABD0A00394807 /* CuArrayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CuArrayTests.m; sourceTree = "<group>"; };
 		158344BB114ABD5300394807 /* CuNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuNumber.h; sourceTree = "<group>"; };
@@ -100,6 +108,8 @@
 			isa = PBXGroup;
 			children = (
 				15F60845113D5902007039C9 /* Cumin.h */,
+				1577F676114B931000CB187A /* CuRange.h */,
+				1577F679114B93B300CB187A /* CuCompilerTools.h */,
 				151728171130068E00460F9B /* CuObject.h */,
 				151728181130068E00460F9B /* CuObject.c */,
 				15882E9E114A61830013D292 /* Array */,
@@ -109,6 +119,8 @@
 				159114A21130A0E0000A0BC0 /* CuReleasePool.c */,
 				158344BB114ABD5300394807 /* CuNumber.h */,
 				158344BC114ABD5300394807 /* CuNumber.c */,
+				1577F671114B913200CB187A /* CuString.h */,
+				1577F672114B913200CB187A /* CuString.c */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -171,6 +183,9 @@
 				159114A31130A0E0000A0BC0 /* CuReleasePool.h in Headers */,
 				158344B7114ABD2100394807 /* CuMutableArray.h in Headers */,
 				158344CA114ABEC300394807 /* CuNumber.h in Headers */,
+				1577F673114B913200CB187A /* CuString.h in Headers */,
+				1577F677114B931000CB187A /* CuRange.h in Headers */,
+				1577F67A114B93B300CB187A /* CuCompilerTools.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +293,7 @@
 				159114A41130A0E0000A0BC0 /* CuReleasePool.c in Sources */,
 				158344B8114ABD2600394807 /* CuMutableArray.c in Sources */,
 				158344CB114ABEC600394807 /* CuNumber.c in Sources */,
+				1577F674114B913200CB187A /* CuString.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
