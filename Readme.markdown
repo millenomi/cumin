@@ -28,3 +28,22 @@ Cumin's RULES are as follows:
 
 Please note that unlike Core Foundation, 'Create' and 'Copy' do not have a particular meaning. Additionally, unlike Objective-C, 'new' has no particular meaning. If a function with that word in its name returns an object, it must be retained to be kept past this function.
 
+Finally: all Cumin functions **require** a release pool (Cumin's version of Cocoa's autorelease pools) in place before calling. All callbacks coming from Cumin code can expect that there will be one alraedy in place; however, all functions called from other sources **must** push a release pool on the stack and pop it when finished as follows:
+
+	void MyFunctionCalledFromElsewhere() {
+		CuReleasePoolPush();
+		/* do absurdly fun stuff here */
+		CuReleasePoolPop();
+	}
+
+If you're using GCC, you can automatically push a pool and pop it at end of the current scope (`{ ... }`) by placing `CuReleasePoolScope()` at the point where you would use `…Push()`:
+
+	void MyFunctionCalledFromElsewhere() {
+		CuReleasePoolScope();
+		/* do absurdly fun stuff here */
+		/* no need to pop */
+	}
+
+## Threading
+
+Cumin is thread-unsafe, main-thread-only at the moment.
